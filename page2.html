@@ -20,11 +20,22 @@
       <h1>page2</h1>
     </main>
     <script>
-      window.addEventListener('message', (event) => {
-        console.log('Message received in iframe1:', event.data);
-
-        // 在 iframe1 中向父页面发送回复消息
-        event.source.postMessage('Reply from iframe1', event.origin);
+      window.addEventListener("DOMContentLoaded", (event) => {
+        window.addEventListener("message", (event) => {
+          console.log("iframe1中", event.data);
+          if (event.data.channel === "channel1") {
+            event.ports[0].postMessage({
+              sourceType: "channel1 - iframe1",
+            });
+          }
+          // 在 iframe1 中向父页面发送回复消息
+          event.source.postMessage(
+            {
+              sourceType: "111, iframe1",
+            },
+            event.origin
+          );
+        });
       });
     </script>
   </body>
